@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+ 
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/head :: head('Lista de Caminhão')}"></head> 
+
+<body>
+    <header th:replace="~{fragmentos/header :: header(activePage='Caminhao')}"></header>
+	<div class="container-fluid" style="max-width: 900px; margin: 0 auto;">
+		<h2 class="text-center"
+			th:text="${caminhao!= null} ? 'Editar Caminhao' : 'Lista de Caminhão'"></h2>
+		<div th:if="${message != null}"
+			class="alert alert-success alert-dismissible fade show text-center"
+			role="alert">
+			[[${message}]]
+			<button type="button" class="close btn-sm" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		</div>
+    <a href="/caminhao/formulario">Novo</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Modelo</th>
+                <th>Placa</th>
+                <th>Ano</th>
+                <th>Marca</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="caminhao : ${listaVeiculos}">
+                <td th:text="${caminhao.modelo}"></td>
+                <td th:text="${caminhao.placa}"></td>
+                <td th:text="${caminhao.ano}"></td>
+                <td th:number="${caminhao.cargaMaxima}"></td>
+                <td th:text="${caminhao.marca.nome}"></td>
+                 
+                <td>
+					<a th:href="@{/caminhao/formulario?id={id}(id=${caminhao.id})}"><button>Editar</button></a>
+					
+					<form action="/caminhao" method="post">
+						<input type="hidden" name="_method" value="delete">
+						<input type="hidden" name="id" th:value="${caminhao.id}">
+						<input type="submit" value="Excluir">
+					</form>
+				</td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:replace="fragmentos/footer :: footer"></div>
+</body>
+</html>
